@@ -1,7 +1,7 @@
 include <boardgame_insert_toolkit_lib.2.scad>;
 
 // determines whether lids are output.
-g_b_print_lid = t;
+g_b_print_lid = f;
 
 // determines whether boxes are output.
 g_b_print_box = t; 
