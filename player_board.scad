@@ -1,10 +1,9 @@
 
-
-
+font1 = "Arial:style=Bold";
 cardSpacer =10;
 
 
-cardHeight = 2;
+cardHeight = 3;
 
 bigCardWidth = 66;
 bigCardDepth = 91;
@@ -13,57 +12,80 @@ smallCardWidth = 44;
 smallCardDepth = 66;
 
 boardHeight = 5;
-boardWidth = 215;
+boardWidth = 255;
 boardDepth = bigCardWidth*3+smallCardDepth*2+cardSpacer*6;
 
-healthCube = 9;
+healthCube = 11;
 healthSpacer = 3;
 
-//diff() {
-cube([boardWidth,boardDepth,boardHeight]);
+characterName =  "ROBERTA"; // Roberta Tolben Quill Olette Elwyn
+difference() {
+    cube([boardWidth,boardDepth,boardHeight]);
 
-spaceX1 = cardSpacer;
-small_card(158,spaceX1);
-small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX1);
-//small_card(158-(cardSpacer*2+smallCardWidth*2),spaceX1);
+    translate ([220, boardDepth/2, 2.5]) {
+        rotate ([0,0,270]) {
+            linear_extrude(height = 3) {
+                text(characterName, font = font1, size = 20, direction = "ltr", spacing = 1, halign = "center" );
+            }
+        }
+    }
 
-spaceX2 = smallCardDepth+(smallCardDepth*3)+(5*cardSpacer);
-small_card(158, spaceX2);
-small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX2);
-small_card(158-(cardSpacer*2+smallCardWidth*2), spaceX2);
-
-spaceY1 = cardSpacer;
-//big_card(spaceY1, smallCardDepth+(2*cardSpacer));
-big_card(spaceY1, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer));
-big_card(spaceY1, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer));
-
-spaceY2 = cardSpacer*2+bigCardDepth;
-big_card(spaceY2, smallCardDepth+(2*cardSpacer));
-big_card(spaceY2, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer));
-big_card(spaceY2, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer));
-
-for(i = [0:1:10]) {
-  health_cube(cardSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-  health_cube(cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-    
-    
-    
-  health_cube(40+cardSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-  health_cube(40+cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-  //health_cube(cardSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-  //health_cube(cardSpacer, cardSpacer+(healthCube+healthSpacer)*i);
-} 
+translate ([220, 400, 9]) rotate ([90, 0,0]) linear_extrude(height = 3) text("Hello", font = font1, size = 14, direction = "ltr", spacing = 1);
 
     
-//}
-
-
-module small_card(px, py) {
-    color("blue") translate([px, py, 10]) cube([smallCardWidth, smallCardDepth, cardHeight]);
+    translate ([88, 147, 2.5]) bLabel("MAX HEALTH", 8);
+    translate ([40, 147, 2.5]) bLabel("CURRENT HEALTH", 8);
+    for(i = [0:1:9]) {
+      healthCube(cardSpacer, cardSpacer+(healthCube+healthSpacer)*i, str(9-i));
+      healthCube(cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i,str(9-i));
+      healthCube(47+cardSpacer, cardSpacer+(healthCube+healthSpacer)*i, str(9-i));
+      healthCube(47+cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i, str(9-i));
+    } 
+    
+    spaceX1 = cardSpacer;
+    small_card(158,spaceX1, "DICES");
+    small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX1, "DICES");
+    
+    spaceX2 = smallCardDepth+(smallCardDepth*3)+(5*cardSpacer);
+    small_card(158, spaceX2, "PASSIVES");
+    small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX2, "PASSIVES");
+    small_card(158-(cardSpacer*2+smallCardWidth*2), spaceX2, "PASSIVES");
+    echo(smallCardDepth+(smallCardDepth*2)+(2*cardSpacer));
+    spaceY1 = cardSpacer;
+    big_card(spaceY1, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer), "CLASS ");
+    big_card(spaceY1, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer), "CLASS");
+    translate ([cardSpacer+bigCardDepth-24, 223, 1]) bLabel("FEATURE", 7);
+    spaceY2 = cardSpacer*2+bigCardDepth;
+    big_card(spaceY2, smallCardDepth+(2*cardSpacer), "ACCESSORY");
+    big_card(spaceY2, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer), "ARMOR");
+    big_card(spaceY2, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer), "WEAPON");
 }
-module big_card(px, py) {
-    color("red") translate([px, py, 10]) rotate([0,0, 0]) cube([bigCardDepth, bigCardWidth,cardHeight]);
+
+
+
+module small_card(px, py, content) {
+    translate([px, py, 3]) cube([smallCardWidth, smallCardDepth, cardHeight]);
+    translate ([px+smallCardWidth-13, py+smallCardDepth-4, 1]) bLabel(content, 7);
 }
-module health_cube(px, py) {
-    color("green") translate([px, py, 10]) rotate([0,0, 0]) cube([healthCube, healthCube,cardHeight]);
+
+module big_card(px, py, content) {
+    translate([px, py, 3]) rotate([0,0, 0]) cube([bigCardDepth, bigCardWidth,cardHeight]);
+    translate ([px+bigCardDepth-13, py+smallCardDepth-4, 1]) bLabel(content, 7);
+}
+module healthCube(px, py, content) {
+    color("green") translate([px, py, 2]) rotate([0,0, 0]) cube([healthCube, healthCube,4]);
+    color("black") translate ([px+2, py+healthSpacer+5, 1]) {
+        rotate ([0,0,270]) {
+            linear_extrude(height = 5) {
+                text(content, font = font1, size = 6, direction = "ltr" );
+            }
+        }
+    }
+}
+module bLabel(label, font_size) {
+    rotate ([0,0,270]) {
+        linear_extrude(height = 3) {
+            text(label, font = font1, size = font_size, direction = "ltr" );
+        }
+    }
 }
