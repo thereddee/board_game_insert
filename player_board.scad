@@ -1,6 +1,6 @@
 
 font1 = "Arial:style=Bold";
-cardSpacer =10;
+cardSpacer =5;
 
 
 cardHeight = 3;
@@ -12,9 +12,9 @@ smallCardWidth = 44;
 smallCardDepth = 66;
 
 boardHeight = 5;
-boardWidth = 255;
+boardWidth = 210;
 boardDepth = bigCardWidth*3+smallCardDepth*2+cardSpacer*6;
-
+echo(boardDepth);
 healthCube = 11;
 healthSpacer = 3;
 
@@ -22,19 +22,19 @@ characterName =  "ROBERTA"; // Roberta Tolben Quill Olette Elwyn
 difference() {
     cube([boardWidth,boardDepth,boardHeight]);
 
-    translate ([220, boardDepth/2, 2.5]) {
+    translate ([195, boardDepth/2, 2.5]) {
         rotate ([0,0,270]) {
             linear_extrude(height = 3) {
-                text(characterName, font = font1, size = 20, direction = "ltr", spacing = 1, halign = "center" );
+                text(characterName, font = font1, size = 9, direction = "ltr", spacing = 1, halign = "center" );
             }
         }
     }
 
-translate ([220, 400, 9]) rotate ([90, 0,0]) linear_extrude(height = 3) text("Hello", font = font1, size = 14, direction = "ltr", spacing = 1);
+    translate ([220, 400, 9]) rotate ([90, 0,0]) linear_extrude(height = 3) text("Hello", font = font1, size = 14, direction = "ltr", spacing = 1);
 
     
-    translate ([88, 147, 2.5]) bLabel("MAX HEALTH", 8);
-    translate ([40, 147, 2.5]) bLabel("CURRENT HEALTH", 8);
+    translate ([83, 142, 2.5]) bLabel("MAX HEALTH", 7);
+    translate ([35, 142, 2.5]) bLabel("CURRENT HEALTH", 7);
     for(i = [0:1:9]) {
       healthCube(cardSpacer, cardSpacer+(healthCube+healthSpacer)*i, str(9-i));
       healthCube(cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i,str(9-i));
@@ -42,26 +42,48 @@ translate ([220, 400, 9]) rotate ([90, 0,0]) linear_extrude(height = 3) text("He
       healthCube(47+cardSpacer+healthCube+healthSpacer, cardSpacer+(healthCube+healthSpacer)*i, str(9-i));
     } 
     
+    // Dices Cards
     spaceX1 = cardSpacer;
-    small_card(158,spaceX1, "DICES");
-    small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX1, "DICES");
+    small_card(148,spaceX1, "DICES");
+    translate([148+13, 0, 0]) cylinder(h=20, r=10, center=true);
+
+    small_card(148-(cardSpacer*1+smallCardWidth*1),spaceX1, "DICES");
+    translate([148+13-(cardSpacer*1+smallCardWidth*1), 0, 0]) cylinder(h=20, r=10, center=true);
     
+    
+    // Pasives Cards
     spaceX2 = smallCardDepth+(smallCardDepth*3)+(5*cardSpacer);
-    small_card(158, spaceX2, "PASSIVES");
-    small_card(158-(cardSpacer*1+smallCardWidth*1),spaceX2, "PASSIVES");
-    small_card(158-(cardSpacer*2+smallCardWidth*2), spaceX2, "PASSIVES");
+    small_card(148, spaceX2, "PASSIVES");
+    translate([148+13, boardDepth, 0]) cylinder(h=20, r=10, center=true);
+    
+    small_card(148-(cardSpacer*1+smallCardWidth*1),spaceX2, "PASSIVES");
+    translate([148+13-(cardSpacer*1+smallCardWidth*1), boardDepth, 0]) cylinder(h=20, r=10, center=true);
+    
+    small_card(148-(cardSpacer*2+smallCardWidth*2), spaceX2, "PASSIVES");
+    translate([148+13-(cardSpacer*2+smallCardWidth*2), boardDepth, 0]) cylinder(h=20, r=10, center=true);
+    
+    
+    
     echo(smallCardDepth+(smallCardDepth*2)+(2*cardSpacer));
     spaceY1 = cardSpacer;
     big_card(spaceY1, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer), "CLASS ");
     big_card(spaceY1, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer), "CLASS");
-    translate ([cardSpacer+bigCardDepth-24, 223, 1]) bLabel("FEATURE", 7);
+    translate ([cardSpacer+bigCardDepth-24, 208, 1]) bLabel("FEATURE", 7);
+    
+    //translate([140, 215, 0]) cylinder(h=20, r=10, center=true);
+    translate([cardSpacer+bigCardDepth*0.5, cardSpacer*3.5+smallCardDepth+bigCardWidth*2, 0]) cylinder(h=20, r=10, center=true);
+    translate([cardSpacer*2+bigCardDepth*1.5, cardSpacer*3.5+smallCardDepth+bigCardWidth*2, 0]) cylinder(h=20, r=10, center=true);
+    translate([cardSpacer*2+bigCardDepth*1.5, cardSpacer*2.5+smallCardDepth+bigCardWidth, 0]) cylinder(h=20, r=10, center=true);
+    //translate([148, 215, 0]) cylinder(h=20, r=10, center=true);
+    
     spaceY2 = cardSpacer*2+bigCardDepth;
     big_card(spaceY2, smallCardDepth+(2*cardSpacer), "ACCESSORY");
     big_card(spaceY2, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer), "ARMOR");
     big_card(spaceY2, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer), "WEAPON");
+    
+    
     cut_left();
 }
-
 
 
 module small_card(px, py, content) {
