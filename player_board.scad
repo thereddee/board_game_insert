@@ -59,6 +59,7 @@ translate ([220, 400, 9]) rotate ([90, 0,0]) linear_extrude(height = 3) text("He
     big_card(spaceY2, smallCardDepth+(2*cardSpacer), "ACCESSORY");
     big_card(spaceY2, smallCardDepth+(smallCardDepth*1)+(3*cardSpacer), "ARMOR");
     big_card(spaceY2, smallCardDepth+(smallCardDepth*2)+(4*cardSpacer), "WEAPON");
+    cut_left();
 }
 
 
@@ -88,4 +89,24 @@ module bLabel(label, font_size) {
             text(label, font = font1, size = font_size, direction = "ltr" );
         }
     }
+}
+
+module cut_left() {
+    difference() {
+        color("red") cube([boardWidth,boardDepth/2,boardHeight]);
+        
+        color("blue") translate([boardWidth*0.75,  boardDepth/2]) linear_extrude(height = 5) rotate(90,0,0) circle(40,$fn=3);%circle(20,$fn=90);
+    }   
+        color("pink") translate([boardWidth*0.25,  boardDepth/2]) linear_extrude(height = 5) rotate(-90,0,0) circle(40,$fn=3);%circle(20,$fn=90);
+}
+
+
+module cut_right() {
+    difference() {
+        color("red") translate([0,boardDepth/2,0])cube([boardWidth,boardDepth/2,boardHeight]);
+        //translate([0,0, -1]) cube([boardWidth,boardDepth/2,boardHeight+2]);
+        rotate([0,180,0]) translate([-(boardWidth/2),  boardDepth*0.3, -boardHeight]) linear_extrude(height = 5) circle(40,$fn=3);%circle(20,$fn=90);
+        color("pink") translate([boardWidth*0.25,  boardDepth/2]) linear_extrude(height = 5) rotate(-90,0,0) circle(40,$fn=3);%circle(20,$fn=90);
+    }
+    color("blue") translate([boardWidth*0.75,  boardDepth/2]) linear_extrude(height = 5) rotate(90,0,0) circle(40,$fn=3);%circle(20,$fn=90);
 }
